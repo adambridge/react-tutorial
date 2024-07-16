@@ -36,14 +36,14 @@ function Board({ xIsNext, squares, onPlay }) {
       <div className="status">{status}</div>
       {makeBoard(squares, Square, handleClick)}
     </>
-  )
+  );
 }
 
 export default function Game() {
   const [history, setHistory] = useState([Array(9).fill(null)]);
-  const [currentMove, setCurrentMove] = useState(0)
-  const xIsNext = currentMove % 2 === 0
-  const currentSquares = history[currentMove]
+  const [currentMove, setCurrentMove] = useState(0);
+  const xIsNext = currentMove % 2 === 0;
+  const currentSquares = history[currentMove];
 
   function handlePlay(nextSquares) {
     const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
@@ -58,7 +58,7 @@ export default function Game() {
   const moves = history.map((squares, move) => {
     let description, list_item
     if (move === currentMove) {
-      list_item = "You are at move " + move 
+      list_item = "You are at move " + move;
     } else {
       if (move > 0) {
         description = "Go to move " + move;
@@ -110,14 +110,14 @@ function makeBoard(squares, SquareComponent, handleClick) {
       row = <>
         {row}
         <SquareComponent value={squares[3 * i + j]} onSquareClick={() => handleClick(3 * i + j)} />
-      </>
+      </>;
     }
     board = <>
       {board}
       <div className="board-row">
         {row}
       </div>
-    </>
+    </>;
   }
   return board;
 }
