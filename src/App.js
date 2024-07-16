@@ -42,6 +42,7 @@ function Board({ xIsNext, squares, onPlay }) {
 export default function Game() {
   const [history, setHistory] = useState([Array(9).fill(null)]);
   const [currentMove, setCurrentMove] = useState(0);
+  const [ascending, setAscending] = useState(true);
   const xIsNext = currentMove % 2 === 0;
   const currentSquares = history[currentMove];
 
@@ -55,7 +56,11 @@ export default function Game() {
     setCurrentMove(nextMove);
   }
 
-  const moves = history.map((squares, move) => {
+  function toggleSortOrder() {
+    setAscending(!ascending);
+  }
+
+  const moves = applyOrder(ascending, history.map((squares, move) => {
     let description, list_item
     if (move === currentMove) {
       list_item = "You are at move " + move;
@@ -68,7 +73,7 @@ export default function Game() {
       list_item = <button onClick={() => jumpTo(move)}>{description}</button>
     }
     return <li key={move}>{list_item}</li>;
-  });
+  }));
 
   return (
     <div className="game">
@@ -76,6 +81,7 @@ export default function Game() {
         <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
       </div>
       <div className="game-info">
+        <button onClick={toggleSortOrder}>{ascending ? "Sort ascending" : "Sort descending"}</button>
         <ol>{moves}</ol>
       </div>
     </div>
@@ -120,4 +126,12 @@ function makeBoard(squares, SquareComponent, handleClick) {
     </>;
   }
   return board;
+}
+
+function applyOrder(ascending, array) {
+  if (ascending) {
+    return array.reverse();
+  } else {
+    return array;
+  }
 }
